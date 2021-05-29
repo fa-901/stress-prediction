@@ -1,6 +1,6 @@
 
 import React, { useState } from "react";
-import { Typography, Button, AppBar, Toolbar, CssBaseline, makeStyles, Container, Box, TextField } from '@material-ui/core';
+import { Typography, Button, AppBar, Toolbar, CssBaseline, makeStyles, Container, Box, TextField, CircularProgress } from '@material-ui/core';
 import { CameraIcon, Assessment } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	container: {
 		height: '100%',
-		marginTop: theme.spacing(10)
+		marginTop: theme.spacing(2)
 	},
 	text: {
 		width: '100%',
@@ -26,6 +26,13 @@ const useStyles = makeStyles((theme) => ({
 
 function App() {
 	const classes = useStyles();
+	const [pss_score, set_pss] = useState(0);
+	const [text, set_text] = useState('');
+	const [loading, setLoad] = useState(false);
+
+	function clickEvt() {
+		console.log(text)
+	}
 
 	return (
 		<CssBaseline>
@@ -46,10 +53,13 @@ function App() {
 							multiline
 							rows={6}
 							variant="outlined"
+							value={text}
+							onChange={(e) => { set_text(e.currentTarget.value) }}
 						/>
-						<Button variant="contained" className={classes.button}>
+						<Button variant="contained" className={classes.button} onClick={clickEvt}>
 							Get Your Score
 						</Button>
+						{loading && <CircularProgress style={{marginBottom: '2rem'}} />}
 					</Box>
 				</Container>
 			</main>
