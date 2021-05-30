@@ -1,4 +1,6 @@
 from flask import Flask, request, jsonify
+from empath import Empath
+lexicon = Empath()
 app = Flask(__name__)
 
 @app.route('/getmsg/', methods=['GET'])
@@ -24,16 +26,16 @@ def respond():
     # Return the response in json format
     return jsonify(response)
 
-@app.route('/post/', methods=['POST'])
+
+@app.route('/getempath/', methods=['POST'])
 def post_something():
-    param = request.form.get('name')
-    print(param)
-    # You can add the test cases you made in the previous function, but in our case here you are just testing the POST functionality
+    param = request.form.get('text')
+    emp = lexicon.analyze(param, normalize=True)
     if param:
         return jsonify({
-            "Message": f"Welcome {name} to our awesome platform!!",
+            "Message": emp,
             # Add this option to distinct the POST request
-            "METHOD" : "POST"
+            "METHOD": "POST"
         })
     else:
         return jsonify({
@@ -47,4 +49,5 @@ def index():
 
 if __name__ == '__main__':
     # Threaded option to enable multiple instances for multiple user access support
-    app.run(threaded=True, port=5000)
+    # app.run(threaded=True, port=5000)
+    app.run(threaded=True, port=int(os.environ.get('PORT', 5000)))

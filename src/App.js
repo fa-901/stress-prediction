@@ -7,15 +7,20 @@ const useStyles = makeStyles((theme) => ({
 	button: {
 		"marginBottom": theme.spacing(5),
 		"color": "#fff",
-		"backgroundColor": "#21D4FD",
-		"backgroundImage": "linear-gradient(270deg, #21D4FD 0%, #B721FF 86%)"
+		"background": "linear-gradient(90deg, rgba(9,9,121,1) 50%, rgba(2,106,221,1) 100%)"
+	},
+	button2: {
+		"marginBottom": theme.spacing(5),
+		"marginLeft": theme.spacing(2),
+		"color": "#fff",
+		"background": "linear-gradient(90deg, rgba(9,9,121,1) 50%, rgba(221,2,2,1) 100%)"
 	},
 	icon: {
 		marginRight: theme.spacing(2),
 	},
 	container: {
 		height: '100%',
-		marginTop: theme.spacing(2)
+		marginTop: theme.spacing(5)
 	},
 	text: {
 		width: '100%',
@@ -30,8 +35,31 @@ function App() {
 	const [text, set_text] = useState('');
 	const [loading, setLoad] = useState(false);
 
+	function resetEvt() {
+		set_text('');
+	}
+
 	function clickEvt() {
-		console.log(text)
+		setLoad(true)
+		const url = `https://fa901x.pythonanywhere.com/getempath`
+		const formData = new FormData();
+		formData.append('text', text);
+		fetch(url, {
+			method: 'POST',
+			body: formData
+		})
+			.then(response => response.json())
+			.then(result => {
+				processResult(result.Message);
+				setLoad(false);
+			})
+			.catch(error => {
+				console.error('Error:', error);
+			});
+	}
+
+	function processResult(emp) {
+		console.log(emp)
 	}
 
 	return (
@@ -56,10 +84,15 @@ function App() {
 							value={text}
 							onChange={(e) => { set_text(e.currentTarget.value) }}
 						/>
-						<Button variant="contained" className={classes.button} onClick={clickEvt}>
-							Get Your Score
-						</Button>
-						{loading && <CircularProgress style={{marginBottom: '2rem'}} />}
+						<Box display="flex" flexDirection='row' justifyContent="center" alignItems="center">
+							<Button variant="contained" onClick={clickEvt} className={classes.button}>
+								Get Your Score
+							</Button>
+							<Button variant="contained" onClick={resetEvt} className={classes.button2}>
+								Reset Text
+							</Button>
+						</Box>
+						{loading && <CircularProgress style={{ marginBottom: '2rem' }} />}
 					</Box>
 				</Container>
 			</main>
