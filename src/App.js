@@ -1,7 +1,7 @@
 
-import React, { useState } from "react";
+import React, { useState, Fragment } from "react";
 import { Typography, Button, AppBar, Toolbar, CssBaseline, makeStyles, Container, Box, TextField, CircularProgress } from '@material-ui/core';
-import { CameraIcon, Assessment } from '@material-ui/icons';
+import { Assessment } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
 	button: {
@@ -34,13 +34,26 @@ function App() {
 	const [pss_score, set_pss] = useState(0);
 	const [text, set_text] = useState('');
 	const [loading, setLoad] = useState(false);
+	const [showResult, setRes] = useState(false);
 
 	function resetEvt() {
 		set_text('');
+		setRes(false);
 	}
+
+	function getStress(x) {
+		if (x >= 0 && x <= 13)
+			return "Low"
+		if (x >= 14 && x <= 26)
+			return "Moderate"
+		if (x >= 27 && x <= 40)
+			return "High"
+	}
+	
 
 	function clickEvt() {
 		setLoad(true)
+		setRes(false);
 		const url = `https://fa901x.pythonanywhere.com/getempath`
 		const formData = new FormData();
 		formData.append('text', text);
@@ -59,8 +72,17 @@ function App() {
 	}
 
 	function processResult(emp) {
-		console.log(emp)
+		let score = ((emp.help * 33.15) + (emp.pride * 216.8) + (emp.suffering * 1323) + (emp.journalism * -352.32) + (emp.blue_collar_job * 817.38) + (emp.reading * 1059.99997) + (emp.anonymity * -1909.6) + (emp.war * -378.3) + (emp.poor * 915.62) + (emp.pain * 835.3) + 15.96)
+		set_pss(Math.round(score));
+		setRes(true);
 	}
+
+
+	const result = (
+		<Fragment>
+			<h1>Your Result is: {getStress(pss_score)} <b>({pss_score})</b></h1>
+		</Fragment>
+	)
 
 	return (
 		<CssBaseline>
@@ -93,6 +115,7 @@ function App() {
 							</Button>
 						</Box>
 						{loading && <CircularProgress style={{ marginBottom: '2rem' }} />}
+						{showResult && result}
 					</Box>
 				</Container>
 			</main>
