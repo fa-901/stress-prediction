@@ -56,7 +56,10 @@ function App() {
 		setRes(false);
 		const url = `https://fa901x.pythonanywhere.com/getempath`
 		const formData = new FormData();
-		formData.append('text', text);
+		let x = text.replace(/\W/g, ' ')
+		x = x.replace(/ +(?= )/g, '')
+		console.log(x)
+		formData.append('text', x);
 		fetch(url, {
 			method: 'POST',
 			body: formData
