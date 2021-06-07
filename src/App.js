@@ -54,11 +54,10 @@ function App() {
 	function clickEvt() {
 		setLoad(true)
 		setRes(false);
-		const url = `https://fa901x.pythonanywhere.com/getempath`
+		const url = `https://fa901x.pythonanywhere.com/lasso`
 		const formData = new FormData();
 		let x = text.replace(/\W/g, ' ')
 		x = x.replace(/ +(?= )/g, '')
-		console.log(x)
 		formData.append('text', x);
 		fetch(url, {
 			method: 'POST',
@@ -66,7 +65,7 @@ function App() {
 		})
 			.then(response => response.json())
 			.then(result => {
-				processResult(result.Message);
+				processResult(result);
 				setLoad(false);
 			})
 			.catch(error => {
@@ -75,8 +74,9 @@ function App() {
 	}
 
 	function processResult(emp) {
-		let score = ((emp.help * 33.15) + (emp.pride * 216.8) + (emp.suffering * 1323) + (emp.journalism * -352.32) + (emp.blue_collar_job * 817.38) + (emp.reading * 1059.99997) + (emp.anonymity * -1909.6) + (emp.war * -378.3) + (emp.poor * 915.62) + (emp.pain * 835.3) + 15.96)
-		set_pss(Math.round(score));
+		// let score = ((emp.help * 33.15) + (emp.pride * 216.8) + (emp.suffering * 1323) + (emp.journalism * -352.32) + (emp.blue_collar_job * 817.38) + (emp.reading * 1059.99997) + (emp.anonymity * -1909.6) + (emp.war * -378.3) + (emp.poor * 915.62) + (emp.pain * 835.3) + 15.96)
+		console.log(emp.value)
+		set_pss(Math.round(emp.value));
 		setRes(true);
 	}
 
