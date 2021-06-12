@@ -1,6 +1,6 @@
 # stress-prediction web application
 
-This is the front-end implementation of the the Stress Prediction project, which is a part of the Data Analytics course at UIU.
+This is the front-end implementation of the the Stress Prediction project, which is a part of the Data Analytics course at United International University, Dhaka, Bangladesh.
 
 ## Building and running on localhost
 
